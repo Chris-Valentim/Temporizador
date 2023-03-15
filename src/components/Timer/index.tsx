@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react';
 import { Second, ConfigButtonInteract, Wrapper, Container, Button, Divider } from './styles';
 
 function Timer() {
-  const [totalTimeInSeconds, setTotalTimeInSeconds] = useState(5);
+  const [totalTimeInSeconds, setTotalTimeInSeconds] = useState(0);
   const [isActive, setIsActive] = useState(false);
   const minutes = Math.floor(totalTimeInSeconds / 60);
   const second = totalTimeInSeconds % 60;
