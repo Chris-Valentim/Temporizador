@@ -7,17 +7,6 @@ function Timer() {
   const minutes = Math.floor(totalTimeInSeconds / 60);
   const second = totalTimeInSeconds % 60;
 
-  // function playSound() {
-  //   const audio = new Audio(`https://youtu.be/9b-m4bJ89pI`);
-  //   audio.play();
-  // }
-
-  function playSound() {
-    const song: HTMLAudioElement = new Audio('./song.mp3')
-
-    song.play();
-  }
-
   useEffect(() => {
     let intervalId: any;
     if (isActive) {
@@ -27,7 +16,6 @@ function Timer() {
     }
     if (totalTimeInSeconds === 0) {
       clearInterval(intervalId);
-      playSound()
     }
     return () => {
       clearInterval(intervalId);
