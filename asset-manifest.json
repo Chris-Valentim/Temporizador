@@ -1,0 +1,15 @@
+{
+  "files": {
+    "main.css": "/Cronometro-Regressivo/static/css/main.491abd72.css",
+    "main.js": "/Cronometro-Regressivo/static/js/main.b52ffbc6.js",
+    "static/js/787.580b2c72.chunk.js": "/Cronometro-Regressivo/static/js/787.580b2c72.chunk.js",
+    "index.html": "/Cronometro-Regressivo/index.html",
+    "main.491abd72.css.map": "/Cronometro-Regressivo/static/css/main.491abd72.css.map",
+    "main.b52ffbc6.js.map": "/Cronometro-Regressivo/static/js/main.b52ffbc6.js.map",
+    "787.580b2c72.chunk.js.map": "/Cronometro-Regressivo/static/js/787.580b2c72.chunk.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.491abd72.css",
+    "static/js/main.b52ffbc6.js"
+  ]
+}
