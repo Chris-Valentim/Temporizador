@@ -1,46 +1,155 @@
-# Getting Started with Create React App
+# ⏱️ Temporizador Regressivo
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+> Um cronômetro regressivo simples, rápido e minimalista — feito em **React** com **TypeScript**. ⚛️
 
-## Available Scripts
+🔗 **Acesse online:** [chris-valentim.github.io/Temporizador](https://chris-valentim.github.io/Temporizador)
 
-In the project directory, you can run:
+---
 
-### `npm start`
+## 🎯 Intuito do Projeto
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
+Este projeto nasceu como um **estudo prático de React**. O objetivo principal foi conhecer e fixar dois dos hooks mais fundamentais da biblioteca:
 
-The page will reload if you make edits.\
-You will also see any lint errors in the console.
+- 🪝 **`useState`** — para gerenciar o estado do temporizador (tempo restante e se ele está ativo ou não).
+- 🪝 **`useEffect`** — para lidar com o efeito colateral da contagem regressiva (o `setInterval`) e sua devida limpeza (`clearInterval`).
 
-### `npm test`
+Mais do que entregar um produto final, a proposta foi **aprender na prática** como o React reage a mudanças de estado, como re-renderiza a interface e como controlar efeitos que dependem do tempo. ⏳
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+---
 
-### `npm run build`
+## 🧠 O que foi aprendido
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+### 🪝 `useState` — Gerenciando o estado
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+O componente controla dois estados:
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+```tsx
+const [totalTimeInSeconds, setTotalTimeInSeconds] = useState(0); // tempo restante em segundos
+const [isActive, setIsActive] = useState(false);                 // se a contagem está rodando
+```
 
-### `npm run eject`
+A partir do total de segundos, os minutos e segundos são derivados e formatados no padrão `MM:SS`:
 
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
+```tsx
+const minutes = Math.floor(totalTimeInSeconds / 60);
+const second = totalTimeInSeconds % 60;
+// exibição: {minutes.toString().padStart(2, "0")} : {second.toString().padStart(2, "0")}
+```
 
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+### 🪝 `useEffect` — Controlando a contagem no tempo
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
+O `useEffect` cria o intervalo que decrementa o tempo a cada **1 segundo**, para a contagem quando chega a zero e — o mais importante — **limpa o intervalo** na função de retorno para evitar vazamentos de memória:
 
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
+```tsx
+useEffect(() => {
+  let intervalId: any;
+  if (isActive) {
+    intervalId = setInterval(() => {
+      setTotalTimeInSeconds(totalTimeInSeconds - 1);
+    }, 1000);
+  }
+  if (totalTimeInSeconds === 0) {
+    clearInterval(intervalId);
+  }
+  return () => {
+    clearInterval(intervalId); // 🧹 limpeza do efeito
+  };
+}, [isActive, totalTimeInSeconds]); // 📌 array de dependências
+```
 
-## Learn More
+---
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+## ✨ Funcionalidades
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+| Botão | Ação |
+|-------|------|
+| ▶️ **START** | Inicia a contagem regressiva |
+| ⏸️ **STOP** | Pausa a contagem |
+| 🔄 **RESET** | Zera o temporizador |
+| ➕ **+30 SECOND** | Adiciona 30 segundos |
+| ➕ **+1 MINUTE** | Adiciona 1 minuto |
+| ➕ **+5 MINUTES** | Adiciona 5 minutos |
+
+> 💡 Os botões de configuração ficam desabilitados enquanto o temporizador está ativo, evitando alterações durante a contagem.
+
+---
+
+## 🎨 Identidade Visual
+
+### 🔤 Tipografia
+
+As fontes são carregadas via **Google Fonts** e aplicadas com **styled-components**:
+
+| Elemento | Fonte | Peso | Estilo |
+|----------|-------|------|--------|
+| 🕐 Dígitos do relógio | `Roboto Mono`, `monospace` | 400 | Monoespaçada — mantém os números alinhados e do mesmo tamanho |
+| 🔘 Botões | `Montserrat`, `sans-serif` | 700 | Sem serifa — moderna e legível para rótulos |
+
+### 🌈 Paleta de Cores
+
+| Cor | Hex | Uso |
+|-----|-----|-----|
+| ⬜ Cinza claro | `#E4E4E4` | Fundo da página e divisória |
+| 🤍 Off-white | `#F1F1F1` | Fundo do card do temporizador |
+| ⬛ Grafite | `#38393D` | Dígitos do relógio |
+| 🔵 Azul-petróleo | `#489FB5` | Cor base dos botões |
+| 💧 Azul claro | `#52ADC4` | Botões ao passar o mouse (hover) |
+| 🌫️ Azul translúcido | `#489FB588` | Botões desabilitados |
+| ☁️ Sombra suave | `#6969691F` | Sombras do card e dos botões |
+
+> 🎭 A paleta transmite uma sensação **clean e tranquila**, com tons de cinza neutros e um azul-petróleo como cor de destaque.
+
+---
+
+## 🛠️ Tecnologias
+
+- ⚛️ **React 18** + **TypeScript**
+- 💅 **styled-components** — estilização baseada em componentes
+- 🔤 **Google Fonts** (Roboto Mono & Montserrat)
+- 🏗️ **Create React App** — ferramentas de build
+- 🚀 **gh-pages** — deploy no GitHub Pages
+
+---
+
+## 📁 Estrutura do Projeto
+
+```
+src/
+├── components/
+│   └── Timer/
+│       ├── index.tsx     # ⏱️ Lógica do temporizador (useState + useEffect)
+│       └── styles.tsx    # 🎨 Estilos com styled-components
+├── style/
+│   └── global.css        # 🌐 Estilos globais (fundo e layout da página)
+├── App.tsx               # 🧩 Componente raiz
+└── index.tsx             # 🚪 Ponto de entrada da aplicação
+```
+
+---
+
+## 🚀 Como executar localmente
+
+```bash
+# 1. Instale as dependências
+npm install
+
+# 2. Rode em modo de desenvolvimento
+npm start
+```
+
+Abra [http://localhost:3000](http://localhost:3000) no navegador para ver a aplicação. 🌐
+
+### 📦 Outros comandos
+
+```bash
+npm run build    # 🏗️ Gera a build de produção na pasta build/
+npm run deploy   # 🚀 Publica no GitHub Pages
+```
+
+---
+
+## 👤 Autor
+
+Desenvolvido por **Christian Valentim** 💻
+
+Feito com 💙 para aprender React e seus hooks.
